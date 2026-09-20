@@ -1,0 +1,16 @@
+services:
+  myimage:
+    build: .
+    ports:
+      - "9090:80"
+    restart: unless-stopped
+    networks:
+      - backend
+    volumes:
+      - valum:/usr/share/nginx/html
+
+volumes:
+  valum:
+
+networks:
+  backend:

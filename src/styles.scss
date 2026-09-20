@@ -1,0 +1,214 @@
+@use '@angular/material' as mat;
+
+/* ------------------------------------------------------------------
+   Design tokens.
+   Stage colours are information, not decoration: cool early in the
+   funnel, warm at offer, resolved green/crimson at the terminals.
+   The action accent is deliberately a different hue family from every
+   stage colour, so a button never reads as a pipeline state.
+   ------------------------------------------------------------------ */
+:root {
+  --ink: #14212e;
+  --ink-soft: #1d2f40;
+  --paper: #ffffff;
+  --canvas: #eef1f4;
+  --rule: #d8dee4;
+  --text: #17222d;
+  --muted: #64748b;
+  --accent: #0f766e;
+  --accent-dark: #0b5c55;
+  --danger: #9f1239;
+
+  --stage-sourced: #64748b;
+  --stage-screening: #0e7490;
+  --stage-interview: #1d4ed8;
+  --stage-assessment: #7c3aed;
+  --stage-offer: #b45309;
+  --stage-hired: #15803d;
+  --stage-rejected: #9f1239;
+
+  --rail-width: 232px;
+  --radius: 6px;
+}
+
+@include mat.core();
+
+$hrms-primary: mat.m2-define-palette(mat.$m2-teal-palette, 800);
+$hrms-accent: mat.m2-define-palette(mat.$m2-blue-grey-palette, 700);
+$hrms-warn: mat.m2-define-palette(mat.$m2-red-palette, 800);
+
+$hrms-theme: mat.m2-define-light-theme((
+  color: (primary: $hrms-primary, accent: $hrms-accent, warn: $hrms-warn),
+  typography: mat.m2-define-typography-config($font-family: "'Inter', system-ui, sans-serif"),
+  density: -1,
+));
+
+@include mat.all-component-themes($hrms-theme);
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--canvas);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Numbers stack in columns all over this app, so they get tabular figures. */
+.num, td.num, .metric-value, .col-count {
+  font-variant-numeric: tabular-nums;
+}
+
+h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.011em; }
+h1 { font-size: 22px; }
+h2 { font-size: 17px; }
+h3 { font-size: 15px; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Focus must stay visible: this tool is used with a keyboard all day. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.page {
+  padding: 20px 24px 32px;
+  max-width: 1500px;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.page-head p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  max-width: 68ch;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.spacer { flex: 1 1 auto; }
+
+.grid-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--paper);
+}
+
+table.data th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+
+table.data td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+
+table.data tbody tr:last-child td { border-bottom: none; }
+table.data tbody tr:hover { background: #f7f9fa; }
+table.data td.num, table.data th.num { text-align: right; }
+
+.pill {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+
+.stage-sourced    { color: var(--stage-sourced); }
+.stage-screening  { color: var(--stage-screening); }
+.stage-interview  { color: var(--stage-interview); }
+.stage-assessment { color: var(--stage-assessment); }
+.stage-offer      { color: var(--stage-offer); }
+.stage-hired      { color: var(--stage-hired); }
+.stage-rejected   { color: var(--stage-rejected); }
+
+.muted { color: var(--muted); }
+.small { font-size: 12.5px; }
+.strong { font-weight: 600; }
+
+.empty {
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--muted);
+  background: var(--paper);
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius);
+}
+
+.empty .empty-title {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 4px 14px;
+}
+
+.form-grid .full { grid-column: 1 / -1; }
+mat-form-field { width: 100%; }
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.error-text {
+  color: var(--danger);
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
