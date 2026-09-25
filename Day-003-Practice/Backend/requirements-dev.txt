@@ -1,0 +1,11 @@
+# Test-only dependencies. Install alongside requirements.txt to run the suites:
+#
+#   pip install -r requirements.txt -r requirements-dev.txt
+#   alembic upgrade head          # or set AUTO_CREATE_SCHEMA=true
+#   python tests_core.py
+#   python tests_features.py
+#
+# The suites need a real PostgreSQL; the document side runs against an
+# in-memory Mongo so no Mongo server is required to run them.
+-r requirements.txt
+mongomock-motor==0.0.34
