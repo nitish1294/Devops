@@ -1,0 +1,24 @@
+# Base image: Python 3.11 on Alpine Linux
+FROM python:3.11-alpine3.23
+
+# Set working directory
+WORKDIR /APP
+
+# Copy Backend folder contents to /APP
+COPY ./Backend .
+
+# Upgrade pip (lightweight, no cache)
+RUN pip install --no-cache-dir --upgrade pip
+
+# Install C development tools (needed for packages like psycopg2, pymongo)
+RUN apk add --no-cache python3-dev
+
+# Install Python dependencies from requirements.txt
+RUN pip install -r requirements.txt
+
+# Expose port (documentation, doesn't actually open port)
+EXPOSE 5000
+
+# Start FastAPI application with Uvicorn server
+# app.main:app = Run 'app' object from app/main.py
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5000"]

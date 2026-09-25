@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # FastAPI Backend Application
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hrms_backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      # Database connections (using service names as hostnames)
+      DATABASE_URL: postgresql://postgres:secure_password@db:5432/hrmsdb
+      MONGO_URL: mongodb://mongo:27017/hrmsdb
+      # FastAPI settings
+      ENVIRONMENT: production
+      LOG_LEVEL: info
+    depends_on:
+      db:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - hrms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # PostgreSQL Database (Relational)
+  db:
+    image: postgres:15
+    container_name: hrms_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secure_password
+      POSTGRES_DB: hrmsdb
+    volumes:
+      # Persist database data across container restarts
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - hrms-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # MongoDB Database (Document)
+  mongo:
+    image: mongo:7
+    container_name: hrms_mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: hrmsdb
+    volumes:
+      # Persist MongoDB data across container restarts
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - hrms-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+# Persistent volumes for databases
+volumes:
+  postgres_data:
+    driver: local
+  mongo_data:
+    driver: local
+
+# Custom network for service communication
+networks:
+  hrms-network:
+    driver: bridge
