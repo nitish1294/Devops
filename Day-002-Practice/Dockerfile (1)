@@ -1,0 +1,7 @@
+FROM postgres:14.24-alpine3.23
+
+ENV POSTGRES_USER=myuser
+ENV POSTGRES_PASSWORD=mypassword
+ENV POSTGRES_DB=mydb
+
+VOLUME ["/var/lib/postgresql/data"]

@@ -1,0 +1,12 @@
+services:
+  postgresdb:
+    build: .
+    container_name: postgres-db
+    ports:
+      - "127.0.0.1:5432:5432"
+    restart: unless-stopped
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

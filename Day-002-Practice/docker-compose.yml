@@ -1,0 +1,12 @@
+services:
+  mongodb:
+    build: .
+    container_name: mongodb
+    ports:
+      - "127.0.0.1:27017:27017"
+    restart: unless-stopped
+    volumes:
+      - mongodata:/data/db
+
+volumes:
+  mongodata:
