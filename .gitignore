@@ -1,3 +1,60 @@
-node_modules/
+
+# --- Secrets -----------------------------------------------------------------
+# .env holds your database password and JWT secret. .env.example is the
+# template and is meant to be committed.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.so
+venv/
+.venv/
+env/
+*.egg-info/
+build/
 dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Node / Angular ----------------------------------------------------------
+node_modules/
+.angular/
+frontend/dist/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# --- Editors -----------------------------------------------------------------
+# .vscode is not ignored wholesale: launch.json and extensions.json are worth
+# sharing. Only the machine-specific parts are excluded.
+.vscode/settings.json
+.vscode/*.local.json
+.idea/
+*.swp
+*~
+
+# --- OS ----------------------------------------------------------------------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 .DS_Store
+
+# --- Local data --------------------------------------------------------------
+*.sqlite3
+*.db
+pgdata/
+mongodata/
+uploads/
+*.log
+
+docker-compose.override.yml
+# --- Docker ------------------------------------------------------------------
